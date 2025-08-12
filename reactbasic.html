@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ChatBot Simple</title>
+  </head>
+  <body>
+    <div class="js-container"></div>
+
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+    <script type="text/babel">
+      function Chatinput(){
+        function saveInputText(event){
+          console.log(event.target.value)
+        }
+        return(
+          <>
+            <input
+              placeholder ='Create a Chat'
+              size ='30'
+              onChange ={saveInputText}
+            />
+            <button>Send</button>
+          </>
+        );
+      }
+    function Chatmessage({message,sender}){
+      // const message = props.message;
+      // const sender = props.sender;
+      // const {message,sender} = props;
+      /*if(sender === 'robot'){
+        return (
+          <div>
+            <img src = "robot.png" width ='50'/>
+            {message}
+          </div>
+        );
+      }*/
+      return (
+          <div>
+            {sender === 'robot' &&(
+              <img src = "robot.png" width ='50'/>
+            )}
+            {message}
+            {sender === 'user' && (
+              <img src = "user.png" width ='50'/>
+            )}
+          </div>
+        );
+    
+    }
+    function ChatMessageComponent(){
+
+      const array = React.UseState([{ 
+          message : "Hi Friend" ,
+          sender : "user",
+          id : 'id1'
+        },{
+          message : "Hi Friend,How can i help You" ,
+          sender : "robot",
+          id : 'id2'
+        },{
+          message : "I need to flip a coin", 
+          sender : "user",
+          id : 'id3'
+        }]);
+
+      const chatMessage =array[0]; // first element in useState which is the currenet data
+      const setChatMessage = array[1]; // second element in useState which is a function used to update data
+
+      // const chatmessage=[{ 
+      //     message : "Hi Friend" ,
+      //     sender : "user",
+      //     id : 'id1'
+      //   },{
+      //     message : "Hi Friend,How can i help You" ,
+      //     sender : "robot",
+      //     id : 'id2'
+      //   },{
+      //     message : "I need to flip a coin", 
+      //     sender : "user",
+      //     id : 'id3'
+      //   }];
+
+
+        function sendMessage(){
+          chatmessage.push({
+            message:'text',
+            sender:'user',
+            id: crypto.randomUUID() //used to create random id using js
+          });
+          console.log(chatmessage);
+        }
+      return (
+        <>
+        <button onClick={sendMessage}>Click</button>
+          {chatmessage.map((chatMessage) => {
+            return (
+              <Chatmessage 
+                message = {chatMessage.message}
+                sender ={chatMessage.sender}
+                key = {chatMessage.id}
+              />
+            )
+          })}
+        </>
+      )
+    }
+
+    function App(){
+      return (
+        <>          
+          <Chatinput />
+          <ChatMessageComponent />
+        </>
+      )
+    }
+     
+      const container = document.querySelector('.js-container');
+      ReactDOM.createRoot(container).render(<App />);
+    </script>
+  </body>
+</html>
